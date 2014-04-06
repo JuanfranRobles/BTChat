@@ -1,7 +1,8 @@
 <!-- Interfaz principal de BTChat -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="fill_parent"
+    android:background="#b27028">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,50 +16,74 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:onClick="MakeDiscoverable"
-            android:text="Make Discoverable" />
+            android:text="Make Discoverable"
+            android:background="#ffdbb4" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:onClick="DiscoverDevices"
-            android:text="Discover Devices" />
+            android:text="Discover Devices"
+            android:background="#ffdbb4" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Devices discovered (tap to connect" />
+            android:text="Devices discovered (tap to connect"
+            android:background="#b7ecff" />
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="120dp"
-            android:id="@id/android:list" />
+            android:id="@id/android:list"
+            android:background="#b7ecff" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Enter message here" />
+            android:text="Enter message here"
+            android:background="#ffdbb4" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:onClick="SendMessage"
-            android:text="Send Message" />
+            android:text="Send Message"
+            android:background="#ffdbb4" />
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtMessage"
-            android:hint="Message to send to the selected device" />
+            android:hint="Message to send to the selected device"
+            android:background="#b7ecff" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Messages Received" />
+            android:text="Messages Received"
+            android:background="#b7ecff" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtData" />
+            android:id="@+id/txtData"
+            android:background="#B7FFF4" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="68dp"
+            android:background="#ffffff">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/btchat_logo"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

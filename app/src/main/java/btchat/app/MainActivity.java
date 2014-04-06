@@ -141,7 +141,59 @@ public class MainActivity extends ListActivity {
     public void DiscoverDevices(View view){
 
         // Buscar otros dispositivos...
+
         DiscoveringDeviices();
+    }
+
+    // Actualizar la interfaz del usuario de la actividad principal. //
+    static Handler UIupdater = new Handler(){
+        @Override
+    public void handleMessage(Message msg){
+            int numOfBytesReceived = msg.arg1;
+            byte[] buffer = (byte[]) msg.obj;
+            // Convertir el array de Byte en una cadena. //
+            String strReceived = new String(buffer);
+            // Sé extrae sólo la cadena recibida. //
+            strReceived = strReceived.substring(0, numOfBytesReceived);
+            //Mostrar en el TextView el texto que se ha recibido. //
+            txtData.setText(txtData.getText().toString() + strReceived);
+        }
+    };
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Inicia el socket server
+        serverThread = new ServerThread(bluetoothAdapter);
+        serverThread.start();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        //Cancela la búsqueda de otros dispositivos Bluetooth.
+        bluetoothAdapter.cancelDiscovery();
+
+        //Elimina el registro del receptor de difusión dedicado a la búsqueda de dispositivos.
+        if(discoverDevicesReceiver != null){
+            try{
+                unregisterReceiver(discoverDevicesReceiver);
+            } catch (Exception e){
+            }
+        }
+        //Si estamos conectados a alguien, entonces...
+        if(connectToServerThread != null){
+            try{
+                //Cerramos la conexión
+                connectToServerThread.bluetoothSocket.close();
+            } catch (IOException e){
+                Log.d("MainActivity", e.getLocalizedMessage());
+            }
+        }
+        //Se detiene el hilo de ejecución.
+        if(serverThread != null){
+            serverThread.cancel();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,4 +215,26 @@ public class MainActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Clase WriteTask
+    private class WriteTask extends AsyncTask<String, Void, Void> {
+        protected Void doInBackground(String... args){
+            try{
+                connectToServerThread.commsThread.write(args[0]);
+            } catch (Exception e){
+                Log.d("MainActivity", e.getLocalizedMessage());
+            }
+            return null;
+        }
+    }
+
+    // Enviar un mensaje al cliente con el que ha establecido el socket.
+    public void SendMessage(View view){
+
+        if(connectToServerThread != null){
+            new WriteTask().execute(txtMessage.getText().toString());
+        }
+        else{
+            Toast.makeText(this, "Seleccione un cliente primero", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
